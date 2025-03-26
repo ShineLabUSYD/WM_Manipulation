@@ -15,3 +15,6 @@ The code folder contains the code required to run the analyses and produce the f
 - [workingmemory_1000.m](https://github.com/JoshuaBTan/WM_Manipulation/blob/main/Code/workingmemory_1000.m), [FIR_analysis1000.m](https://github.com/JoshuaBTan/WM_Manipulation/blob/main/Code/FIR_analysis1000.m), and [ldaMATLAB1000.m](https://github.com/JoshuaBTan/WM_Manipulation/blob/main/Code/ldaMATLAB1000.m) contains similar code to the main analyses but replicated using 1000 Schaefer cortical regions, 54 Tian Subcortical Regions, and 28 SUIT Cerebellar Regions. The code was used to produce the results in Supplementary Material Figure 6
 
 
+## Visualisation
+The visualisation folder contains the code required to create the brain visualisations. Details regarding dependencies are described in the README file.
+
