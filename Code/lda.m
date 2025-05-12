@@ -45,7 +45,7 @@ cvLossHardVsWrong = zeros(numTimepoints, length(componentRange));
 % Loop over each timepoint
 for t = 1:numTimepoints
     % Reshape data for current timepoint
-    X_t = squeeze(X(:, :, t)); % Size (96x502)
+    X_t = squeeze(X(:, :, t)); % Size (96x482)
        
     % Loop over each number of PCA components
     for k = 1:length(componentRange)
@@ -57,12 +57,22 @@ for t = 1:numTimepoints
         Y1(Y == 1) = 1; % Easy-correct
         Y1(Y == 3) = 2; % Hard-correct
 
+        % Create labels for participants
+        nSubjects = 24;
+        sub_id = repmat([1:24]',2,1);
+
         X_train1 = X_pca(Y1 ~= 0, :);
         Y_train1 = Y1(Y1 ~= 0);
         
+        % Create leave-one-out partition
+        cvp = cvpartition(sub_id, 'KFold', 5, 'Stratify', true);
+
         % Fit LDA model for easy-correct vs. hard-correct
-        lda1 = fitcdiscr(X_train1, Y_train1, 'DiscrimType','linear', 'ClassNames', [1, 2], ...
-            'CrossVal', 'on', 'KFold', 5);
+        lda1 = fitcdiscr(X_train1, Y_train1, 'DiscrimType','linear', 'ClassNames', [1, 2]);
+        
+        % Cross-validate using leave-one-out partition
+        lda1_xval = crossval(lda1, 'CVPartition', cvp);
+        
         %predictions1 = predict(lda1, X_train1);
         predictions1 = kfoldPredict(lda1);
         cvLossEasyVsHard(t, k) = kfoldLoss(lda1);
@@ -84,9 +94,12 @@ for t = 1:numTimepoints
         X_train2 = X_pca(Y2 ~= 0, :);
         Y_train2 = Y2(Y2 ~= 0);
         
-        % Fit LDA model for hard-correct vs. hard-wrong
-        lda2 = fitcdiscr(X_train2, Y_train2, 'DiscrimType', 'linear', 'ClassNames', [1, 2], ...
-            'CrossVal', 'on', 'KFold', 5);
+       % Fit LDA model for hard-correct vs. hard-wrong
+        lda2 = fitcdiscr(X_train2, Y_train2, 'DiscrimType', 'linear', 'ClassNames', [1, 2]);
+
+        % Cross-validate using leave-one-out partition
+        lda2_xval = crossval(lda2, 'CVPartition', cvp);
+        
         %predictions2 = predict(lda2, X_train2);
         predictions2 = kfoldPredict(lda2);
         cvLossHardVsWrong(t, k) = kfoldLoss(lda2);
