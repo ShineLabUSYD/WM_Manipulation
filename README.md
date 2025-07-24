@@ -1,5 +1,5 @@
 # Cerebellar and Subcortical Contributions to Working Memory Manipulation
-This repository contains the code used in my project *"Cerebellar and Subcortical Contributions to Working Memory Manipulation"*. 
+This repository contains the code used in my project *"Cerebellar and Subcortical Contributions to Working Memory Manipulation"* (https://doi.org/10.1038/s42003-025-08467-0). 
 
 **Code** was written using a combination of MATLAB and Python scripts.
 
